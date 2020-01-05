@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+
+        *{
+            margin-top: 20px;
+            margin-left: 20px;
+            color:rgb(214, 66, 66);
+        }
+
+        #start{
+
+            background-color:#eb3b2f;
+            border-radius:4px;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            padding:6px 15px;
+            
+
+        }
+        #game{
+
+            width:600px;
+            height:600px;
+            background: url(./japanbg-01.jpg);
+            border-radius:3em;
+            cursor:url(./fan-01.png) 50 50, auto;
+            overflow:hidden;
+            position:relative;
+            margin:auto;
+
+        }
+
+        #game img {
+
+            height:150px;
+            position:absolute;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="game">
+    <input type="button" value="開始遊戲" id="start">
+   分數: <span id="score">0</span> 分
+   剩餘: <span id="sec">30</span> 秒 
+    </div>
+    <script src="../jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(function(){
+            //分數
+            let score= 0;
+            //遊戲時間
+            let sec = 30;
+
+            // //每秒產生殭屍的計時器
+            // let zbtimer = 0;
+            //僵屍的流水號
+            let zbid=0
+            //遊戲倒數的計時器
+            let gametimer = 0;
+
+            //移動殭屍
+            let movezb = (id) =>{
+
+            $(`#zb${id}`).animate({
+
+                left: rand(100)+"%",
+                top: rand(100)+"%"
+                
+            },3000,function(){
+                movezb(id);
+            })
+
+            }
+
+            //隨機
+            let rand  = (num) =>{
+            return Math.round(Math.random()*num);
+
+            }
+            let mos=['jp-b1.gif','jp-g1.gif'];
+            //開始倒數
+            $("#start").on("click",function(){
+                //將按鈕停用
+                $(this).attr("disabled",true);
+
+                //開始倒數
+                gametimer = setInterval(()=>{
+                    //秒數減1，修改文字
+
+                        sec--;
+                        $("#sec").text(sec);
+
+                        //如果到0
+                        if(sec == 0){
+                            clearInterval(gametimer);
+                            $(this).attr("disabled",false);
+                            setTimeout(()=>{
+                                alert(`時間到，您的得分為 ${score}分`);
+                            },100)
+                        }
+
+                        let num = rand(30);
+                        let randmos=rand(1);
+                        if(num > 0){
+
+
+                            $("#game").append(`<img src="${mos[randmos]}" id="zb${zbid}">`);
+                            $(`#zb${zbid}`).css({
+                                left:rand(100)+"%", 
+                                top:rand(100)+"%"
+                            });
+                            movezb(zbid);
+                            zbid++;
+
+                        }
+                },1000)
+
+            })
+
+            $("#game").on("click", "img" , function(){
+        
+                if($(this).attr("src") == "jp-b1.gif"){
+                    $(this).attr("src" , "./jp-b2.gif");
+                    $(this).stop();
+                    $(this).fadeOut(2000);
+                    $(this).css("pointer-events" , "none");
+                }else{
+                    $(this).attr("src","./jp-g2.gif");
+                    $(this).stop();
+                    $(this).fadeOut(2000);
+                    $(this).css("pointer-events" , "none");
+                }
+                
+                score++;
+                $("#score").text(score);
+
+                 })
+
+        })
+    </script>
+</body>
+</html>
