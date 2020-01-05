@@ -54,7 +54,7 @@
    分數: <span id="score">0</span> 分
    剩餘: <span id="sec">30</span> 秒 
     </div>
-    <script src="../jquery-3.4.1.min.js"></script>
+    <script src="./jquery-3.4.1.min.js"></script>
 
     <script>
         $(function(){
@@ -132,7 +132,7 @@
             $("#game").on("click", "img" , function(){
         
                 if($(this).attr("src") == "jp-b1.gif"){
-                    $(this).attr("src" , "./jp-b2.gif");
+                    $(this).attr("src","./jp-b2.gif");
                     $(this).stop();
                     $(this).fadeOut(2000);
                     $(this).css("pointer-events" , "none");
